@@ -1,0 +1,138 @@
+﻿<Window
+  x:Class="ryokohbato_life.MainWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:local="clr-namespace:ryokohbato_life"
+  xmlns:ui="http://schemas.modernwpf.com/2019"
+  ui:WindowHelper.UseModernWindowStyle="True"
+  mc:Ignorable="d"
+  Title="{Binding Caption__MainWindow}"
+  Height="450"
+  Width="800"
+  Loaded="StartWatching">
+
+  <Window.DataContext>
+    <local:MainViewModel/>
+  </Window.DataContext>
+
+  <Window.Resources>
+    <local:MachineNameEditabilityConverter x:Key="MachineNameEditabilityConverter"/>
+  </Window.Resources>
+
+  <Grid
+    Margin="{Binding Body__Margin}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <StackPanel
+      Grid.Column="0"
+      Grid.Row="0"
+      Margin="{Binding ContentsWrapper__Margin}">
+      <Label
+        Content="{Binding Title__RegisterApp}"
+        FontSize="{Binding FontSize__Title}"/>
+      <StackPanel
+        Margin="{Binding ItemWrapper__Margin}">
+        <ComboBox
+          x:Name="Processes"
+          ItemsSource="{Binding ProcessesName}"
+          SelectedValue="{Binding SelectedProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+          Margin="{Binding Item__Margin}"
+          HorizontalAlignment="Stretch"/>
+        <Label
+          Content="{Binding Content__DisplayName}"
+          Margin="{Binding Item__Margin}"
+          VerticalAlignment="Center"
+          HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+        <TextBox
+          Text="{Binding SelectedProcessDisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+          Margin="{Binding Item__Margin}"
+          VerticalAlignment="Center"/>
+        <WrapPanel
+          Margin="{Binding Item__Margin}">
+          <Button
+            Content="{Binding Content__RegisterButton}"
+            Command="{Binding RegisterCommand}"
+            CommandParameter="{Binding ElementName=Processes, Path=SelectedValue}"/>
+          <CheckBox
+            Content="{Binding Content__DisplayAllProcesses}"
+            IsChecked="{Binding IsDisplayingAllProcesses}"
+            Margin="{Binding Item__Margin__Large}"/>
+        </WrapPanel>
+      </StackPanel>
+    </StackPanel>
+    <ScrollViewer
+      Grid.Column="0"
+      Grid.Row="1"
+      Margin="{Binding ItemWrapper__Margin}">
+      <StackPanel>
+        <ItemsControl
+          ItemsSource="{Binding RegisteredApplications}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Grid
+                Margin="{Binding DataContext.ListedItemWrapper__Margin, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
+                <DockPanel>
+                  <Image
+                    Source="{Binding IconUrl}"
+                    Height="{Binding DataContext.RegisteredApplicationsItem__Size, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Width="{Binding DataContext.RegisteredApplicationsItem__Size, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Stretch="Uniform"
+                    DockPanel.Dock="Left"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+                  <Label
+                    Content="{Binding DisplayName}"
+                    Margin="{Binding DataContext.ListedItem__Margin, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    DockPanel.Dock="Left"
+                    VerticalAlignment="Center"/>
+                  <Button
+                    Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    CommandParameter="{Binding ProcessName}"
+                    DockPanel.Dock="Right"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    ToolTip="{Binding DataContext.Content__Delete, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
+                    <Path
+                      Data="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4z"
+                      Fill="White"
+                      Height="24"
+                      Width="24"/>
+                  </Button>
+                </DockPanel>
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+    </ScrollViewer>
+    <StackPanel
+      Grid.Column="1"
+      Grid.Row="0"
+      Margin="{Binding ContentsWrapper__Margin}">
+      <Label
+        Content="{Binding Title__MachineName}"
+        FontSize="{Binding FontSize__Title}"/>
+      <StackPanel
+        Margin="{Binding ItemWrapper__Margin}">
+        <TextBox
+          Text="{Binding Text__MachineName}"
+          IsEnabled="{Binding IsUsingSystemSetting, Converter={StaticResource MachineNameEditabilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+          Margin="{Binding Item__Margin}"/>
+        <CheckBox
+          Content="{Binding Content__UseSystemSetting}"
+          IsChecked="{Binding IsUsingSystemSetting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+
+</Window>
