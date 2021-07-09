@@ -11,6 +11,8 @@ namespace ryokohbato_life
 {
   public partial class MainViewModel : BindableBase
   {
+    public const string UnknownExeIconURL = "https://i.gyazo.com/84ae907ec3b9b42d38edd85d7b81e7bd.png";
+
     Timer timer;
     Gyazo gyazo;
     Slack slack;
@@ -75,7 +77,7 @@ namespace ryokohbato_life
       catch (Exception)
       {
         Debug.WriteLine("out");
-        item.IconUrl = "https://i.gyazo.com/84ae907ec3b9b42d38edd85d7b81e7bd.png";
+        item.IconUrl = UnknownExeIconURL;
       }
 
       RegisteredApplications.Add(item);
