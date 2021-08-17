@@ -16,12 +16,12 @@ namespace ryokohbato_life.ryokohbato_scheduler
     private static string _applicationName = "ryokohbato-scheduler";
 
     // Google Sheetsに登録された予定から、指定された日数先までのものを出力
-    public static List<Schedule> GetSchedule(int days, DateTime date, string spreadsheetId)
+    public static List<Schedule> GetSchedule(int days, DateTime date, string sheetName, string secretFilePath)
     {
       UserCredential userCredential;
 
       // プログラムのディレクトリ以下にsecrets/client_secret.jsonファイルが必要
-      using (var stream = new FileStream("secrets/client_secret.json", FileMode.Open, FileAccess.Read))
+      using (var stream = new FileStream(secretFilePath, FileMode.Open, FileAccess.Read))
       {
         string credentialFilePath = AppDomain.CurrentDomain.BaseDirectory;
         credentialFilePath = Path.Combine(credentialFilePath, ".credentials/sheets.googleapis.com-dotnet-quickstart.json");
@@ -40,7 +40,7 @@ namespace ryokohbato_life.ryokohbato_scheduler
         ApplicationName = _applicationName,
       });
 
-      var request = service.Spreadsheets.Values.Get(spreadsheetId, "2021-08!A2:E20");
+      var request = service.Spreadsheets.Values.Get(SecretData.Spreadsheet.SpreadsheetId, $"{sheetName}!A2:E20");
       request.ValueRenderOption = SpreadsheetsResource.ValuesResource.GetRequest.ValueRenderOptionEnum.FORMATTEDVALUE;
       var results = request.Execute();
 

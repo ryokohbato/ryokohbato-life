@@ -11,7 +11,7 @@ namespace ryokohbato_life
     {
       // await PostScheduleTask(ryokohbato_scheduler.Scheduler.GetSchedule());
       Console.WriteLine(string.Join('\n', ryokohbato_scheduler.SchedulerFormatter.Execute(
-        ryokohbato_scheduler.Scheduler.GetSchedule(1, DateTime.Now, SecretData.Spreadsheet.SpreadsheetId))));
+        ryokohbato_scheduler.Scheduler.GetSchedule(1, DateTime.Now, "2021-08", "secrets/client_secret.json"))));
     }
 
     // 引数として与えられたリストを改行区切りでSlackに投稿
