@@ -16,7 +16,7 @@ namespace ryokohbato_life.ryokohbato_scheduler
     private static string _applicationName = "ryokohbato-scheduler";
 
     // Google Sheetsに登録された予定から、指定された日数先までのものを出力
-    public static List<Schedule> GetSchedule(int days)
+    public static List<Schedule> GetSchedule(int days, DateTime date, string spreadsheetId)
     {
       UserCredential userCredential;
 
@@ -40,7 +40,7 @@ namespace ryokohbato_life.ryokohbato_scheduler
         ApplicationName = _applicationName,
       });
 
-      var request = service.Spreadsheets.Values.Get(SecretData.Spreadsheet.SpreadsheetId, "2021-08!A2:E20");
+      var request = service.Spreadsheets.Values.Get(spreadsheetId, "2021-08!A2:E20");
       request.ValueRenderOption = SpreadsheetsResource.ValuesResource.GetRequest.ValueRenderOptionEnum.FORMATTEDVALUE;
       var results = request.Execute();
 
