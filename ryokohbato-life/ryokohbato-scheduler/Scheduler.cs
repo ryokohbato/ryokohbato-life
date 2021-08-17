@@ -15,8 +15,8 @@ namespace ryokohbato_life.ryokohbato_scheduler
     private static string[] _scopes = { SheetsService.Scope.Spreadsheets };
     private static string _applicationName = "ryokohbato-scheduler";
 
-    // Google Sheetsに登録された予定を出力
-    public static List<string> GetSchedule()
+    // Google Sheetsに登録された予定から、指定された日数先までのものを出力
+    public static List<Schedule> GetSchedule(int days)
     {
       UserCredential userCredential;
 
@@ -40,51 +40,35 @@ namespace ryokohbato_life.ryokohbato_scheduler
         ApplicationName = _applicationName,
       });
 
-      var request = service.Spreadsheets.Values.Get(SecretData.Spreadsheet.SpreadsheetId, "2021-08!A2:D20");
+      var request = service.Spreadsheets.Values.Get(SecretData.Spreadsheet.SpreadsheetId, "2021-08!A2:E20");
       request.ValueRenderOption = SpreadsheetsResource.ValuesResource.GetRequest.ValueRenderOptionEnum.FORMATTEDVALUE;
-      var result = request.Execute();
+      var results = request.Execute();
 
-      List<string> responses = new List<string>();
+      List<Schedule> schedules = new List<Schedule>();
       
-      foreach(var s in result.Values)
+      foreach(var result in results.Values)
       {
-        if (s[0].ToString() == string.Empty)
+        // タイトルで予定の有無を判別
+        if (result[0].ToString() == string.Empty)
         {
           continue;
         }
 
-        if (s[1].ToString() == "FALSE")
+        var dates = result[2].ToString().Split('-');
+        var times = result[3].ToString().Split('-');
+        
+        schedules.Add(new Schedule()
         {
-          s[0] = "非公開の予定";
-        }
-        var dates = s[2].ToString().Split('-');
-        var times = s[3].ToString().Split('-');
-
-        if (dates.Length == 1)
-        {
-          if (times.Length == 1)
-          {
-            responses.Add($"{dates[0]} {times[0]}に{s[0]}があります。");
-          }
-          else if (times.Length == 2)
-          {
-            responses.Add($"{dates[0]} {times[0]}〜{times[1]}に{s[0]}があります。");
-          }
-        }
-        else if (dates.Length == 2)
-        {
-          if (times.Length == 1)
-          {
-            responses.Add($"{dates[0]} {times[0]}〜{dates[1]} {times[0]}に{s[0]}があります。");
-          }
-          else if (times.Length == 2)
-          {
-            responses.Add($"{dates[0]} {times[0]}〜{dates[1]} {times[1]}に{s[0]}があります。");
-          }
-        }
+          Title = result[0].ToString(),
+          IsVisible = result[1].ToString() == "TRUE" ? true : false,
+          Dates = dates,
+          Times = times,
+          // 予定の詳細は省略可能
+          Detail = result.Count == 5 ? result[4].ToString() : string.Empty,
+        });
       }
 
-      return responses;
+      return schedules;
     }
   }
 }

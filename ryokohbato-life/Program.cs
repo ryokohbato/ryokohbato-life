@@ -9,7 +9,8 @@ namespace ryokohbato_life
     private static Slack _slack = new Slack();
     public static async Task Main(string[] args)
     {
-      await PostScheduleTask(ryokohbato_scheduler.Scheduler.GetSchedule());
+      // await PostScheduleTask(ryokohbato_scheduler.Scheduler.GetSchedule());
+      Console.WriteLine(string.Join('\n', ryokohbato_scheduler.SchedulerFormatter.Execute(ryokohbato_scheduler.Scheduler.GetSchedule(1))));
     }
 
     // 引数として与えられたリストを改行区切りでSlackに投稿
