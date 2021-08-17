@@ -16,6 +16,11 @@ namespace ryokohbato_life.ryokohbato_scheduler
     private static string _applicationName = "ryokohbato-scheduler";
 
     // Google Sheetsに登録された予定から、指定された日数先までのものを出力
+    public static List<Schedule> GetSchedule(int days)
+    {
+      return GetSchedule(days, DateTime.Now, $"{DateTime.Now.Year}-{DateTime.Now.Month.ToString().PadLeft(2, '0')}", "secrets/client_secret.json");
+    }
+
     public static List<Schedule> GetSchedule(int days, DateTime date, string sheetName, string secretFilePath)
     {
       UserCredential userCredential;

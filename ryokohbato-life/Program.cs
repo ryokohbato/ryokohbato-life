@@ -10,8 +10,7 @@ namespace ryokohbato_life
     public static async Task Main(string[] args)
     {
       // await PostScheduleTask(ryokohbato_scheduler.Scheduler.GetSchedule());
-      Console.WriteLine(string.Join('\n', ryokohbato_scheduler.SchedulerFormatter.Execute(
-        ryokohbato_scheduler.Scheduler.GetSchedule(1, DateTime.Now, "2021-08", "secrets/client_secret.json"))));
+      Console.WriteLine(string.Join('\n', ryokohbato_scheduler.SchedulerFormatter.Execute(ryokohbato_scheduler.Scheduler.GetSchedule(3))));
     }
 
     // 引数として与えられたリストを改行区切りでSlackに投稿
