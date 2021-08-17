@@ -5,7 +5,7 @@ using ryokohbato_life.ryokohbato_scheduler;
 
 namespace Tests
 {
-  public class Tests
+  public class SchedulerTests
   {
     List<Schedule> schedules;
 
@@ -33,7 +33,7 @@ namespace Tests
         Title = "予定1",
         IsVisible = true,
         Dates = new string[] {"1/1"},
-        Times = new string[] {"8:00", "12:00"},
+        Times = new string[] {"8:00"},
         Detail = string.Empty,
       }));
     }
