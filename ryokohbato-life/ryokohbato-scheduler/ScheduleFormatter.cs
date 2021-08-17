@@ -19,22 +19,22 @@ namespace ryokohbato_life.ryokohbato_scheduler
         {
           if (x.Times.Length == 1)
           {
-            return $"{x.Dates[0]} {x.Times[0]}に{x.Title}があります。";
+            return $"{x.Dates[0]} {x.Times[0]} {x.Title}";
           }
           else if (x.Times.Length == 2)
           {
-            return $"{x.Dates[0]} {x.Times[0]}〜{x.Times[1]}に{x.Title}があります。";
+            return $"{x.Dates[0]} {x.Times[0]}〜{x.Times[1]} {x.Title}";
           }
         }
         else if (x.Dates.Length == 2)
         {
           if (x.Times.Length == 1)
           {
-            return $"{x.Dates[0]} {x.Times[0]}〜{x.Dates[1]} {x.Times[0]}に{x.Title}があります。";
+            return $"{x.Dates[0]} {x.Times[0]}〜{x.Dates[1]} {x.Times[0]} {x.Title}";
           }
           else if (x.Times.Length == 2)
           {
-            return $"{x.Dates[0]} {x.Times[0]}〜{x.Dates[1]} {x.Times[1]}に{x.Title}があります。";
+            return $"{x.Dates[0]} {x.Times[0]}〜{x.Dates[1]} {x.Times[1]} {x.Title}";
           }
         }
 
