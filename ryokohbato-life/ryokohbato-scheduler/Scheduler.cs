@@ -53,6 +53,9 @@ namespace ryokohbato_life.ryokohbato_scheduler
       
       foreach(var result in results.Values)
       {
+        DateTime startDateTime = new DateTime(1900, 1, 1, 0, 0, 0);
+        DateTime endDateTime = new DateTime(1900, 1, 1, 0, 0, 0);
+
         // タイトルで予定の有無を判別
         if (result[0].ToString() == string.Empty)
         {
@@ -61,7 +64,127 @@ namespace ryokohbato_life.ryokohbato_scheduler
 
         var dates = result[2].ToString().Split('-');
         var times = result[3].ToString().Split('-');
-        
+
+        if (dates.Length == 1)
+        {
+          string[] startDate__Splitted = dates[0].Split('/');
+
+          if (startDate__Splitted.Length != 2)
+          {
+            continue;
+          }
+
+          if (!int.TryParse(startDate__Splitted[0], out int startDate__Month))
+          {
+            continue;
+          }
+
+          if (!int.TryParse(startDate__Splitted[1], out int startDate__Day))
+          {
+            continue;
+          }
+
+          string[] startTime__Splitted = times[0].Split(':');
+
+          if (!int.TryParse(startTime__Splitted[0], out int startTime__Hour))
+          {
+            continue;
+          }
+
+          if (!int.TryParse(startTime__Splitted[1], out int startTime__Minute))
+          {
+            continue;
+          }
+
+          startDateTime = new DateTime(date.Year, startDate__Month, startDate__Day, startTime__Hour, startTime__Minute, 0);
+
+          endDateTime = startDateTime;
+        }
+        else if (dates.Length == 2)
+        {
+          string[] startDate__Splitted = dates[0].Split('/');
+
+          if (startDate__Splitted.Length != 2)
+          {
+            continue;
+          }
+
+          if (!int.TryParse(startDate__Splitted[0], out int startDate__Month))
+          {
+            continue;
+          }
+
+          if (!int.TryParse(startDate__Splitted[1], out int startDate__Day))
+          {
+            continue;
+          }
+
+          string[] startTime__Splitted = times[0].Split(':');
+
+          if (!int.TryParse(startTime__Splitted[0], out int startTime__Hour))
+          {
+            continue;
+          }
+
+          if (!int.TryParse(startTime__Splitted[1], out int startTime__Minute))
+          {
+            continue;
+          }
+
+          startDateTime = new DateTime(date.Year, startDate__Month, startDate__Day, startTime__Hour, startTime__Minute, 0);
+
+          string[] endDate__Splitted = dates[1].Split('/');
+
+          if (endDate__Splitted.Length != 2)
+          {
+            continue;
+          }
+
+          if (!int.TryParse(endDate__Splitted[0], out int endDate__Month))
+          {
+            continue;
+          }
+
+          if (!int.TryParse(endDate__Splitted[1], out int endDate__Day))
+          {
+            continue;
+          }
+
+          string[] endTime__Splitted = times[1].Split(':');
+
+          if (!int.TryParse(endTime__Splitted[0], out int endTime__Hour))
+          {
+            continue;
+          }
+
+          if (!int.TryParse(endTime__Splitted[1], out int endTime__Minute))
+          {
+            continue;
+          }
+
+          if (startDate__Month <= endDate__Month)
+          {
+            endDateTime = new DateTime(date.Year, endDate__Month, endDate__Day, endTime__Hour, endTime__Minute, 0);
+          }
+          else
+          {
+            endDateTime = new DateTime(date.Year + 1, endDate__Month, endDate__Day, endTime__Hour, endTime__Minute, 0);
+          }
+        }
+
+        if (DateTime.Compare(endDateTime, date) < 0)
+        {
+          continue;
+        }
+
+        DateTime lastTimeDate = date.AddDays(days);
+        lastTimeDate = new DateTime(lastTimeDate.Year, lastTimeDate.Month, lastTimeDate.Day, 23, 59, 59);
+
+        if (DateTime.Compare(startDateTime, lastTimeDate) > 0)
+        {
+          continue;
+        }
+
         schedules.Add(new Schedule()
         {
           Title = result[0].ToString(),

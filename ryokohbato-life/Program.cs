@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ryokohbato_life.ryokohbato_scheduler;
 
 namespace ryokohbato_life
 {
@@ -9,8 +10,7 @@ namespace ryokohbato_life
     private static Slack _slack = new Slack();
     public static async Task Main(string[] args)
     {
-      // await PostScheduleTask(ryokohbato_scheduler.Scheduler.GetSchedule());
-      Console.WriteLine(string.Join('\n', ryokohbato_scheduler.SchedulerFormatter.Execute(ryokohbato_scheduler.Scheduler.GetSchedule(3))));
+      await PostScheduleTask(SchedulerFormatter.Execute(Scheduler.GetSchedule(5)));
     }
 
     // 引数として与えられたリストを改行区切りでSlackに投稿
@@ -24,7 +24,7 @@ namespace ryokohbato_life
             'type': 'section',
             'text': {
               'type': 'mrkdwn',
-              'text': '*今後の予定*\n" + string.Join('\n', responses) + @"'
+              'text': '*直近の予定*\n" + string.Join('\n', responses) + @"'
             },
           },  
         ],
